@@ -3,6 +3,7 @@ import localFont from "next/font/local";
 import "./globals.css";
 import Navbar from "@/components/navbar/Navbar";
 import Providers from "./providers";
+import { ClerkProvider } from "@clerk/nextjs";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -17,7 +18,8 @@ const geistMono = localFont({
 
 export const metadata: Metadata = {
   title: "Airbnb | Vacation rentals, cabins, beach houses, & more",
-  description: "Get an Airbnb for every kind of trip → 7 million vacation rentals → 2 million Guest Favorites → 220+ countries and regions worldwide",
+  description:
+    "Get an Airbnb for every kind of trip → 7 million vacation rentals → 2 million Guest Favorites → 220+ countries and regions worldwide",
 };
 
 export default function RootLayout({
@@ -26,15 +28,17 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        <Providers>
-        <Navbar />
-        <main className='container py-10'>{children}</main>
-        </Providers>
-      </body>
-    </html>
+    <ClerkProvider>
+      <html lang="en" suppressHydrationWarning>
+        <body
+          className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        >
+          <Providers>
+            <Navbar />
+            <main className="container py-10">{children}</main>
+          </Providers>
+        </body>
+      </html>
+    </ClerkProvider>
   );
 }
