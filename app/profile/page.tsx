@@ -18,7 +18,6 @@ async function ProfilePage() {
           action={updateProfileImageAction}
           image={profile.profileImage}
           name={profile.username}
-          action={updateProfileImageAction}
           text="Update profile image"
         />
         <FormContainer action={updateProfileAction}>
