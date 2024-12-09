@@ -4,20 +4,26 @@ import { RxReload } from "react-icons/rx";
 import { useFormStatus } from "react-dom";
 import { Button } from "@/components/ui/button";
 
+type btnSize = "default" | "lg" | "sm";
+
 type SubmitButtonProps = {
   className?: string;
   text?: string;
+  size?: btnSize;
 };
 
-export function SubmitButton({ className = "", text = "submit" }: SubmitButtonProps) {
+export function SubmitButton({
+  className = "",
+  text = "submit",
+  size = "lg",
+}: SubmitButtonProps) {
   const { pending } = useFormStatus();
-
   return (
     <Button
       type="submit"
-      className={`capitalize ${className}`}
       disabled={pending}
-      size={"lg"}
+      className={`capitalize ${className}`}
+      size={size}
     >
       {pending ? (
         <>
@@ -30,5 +36,3 @@ export function SubmitButton({ className = "", text = "submit" }: SubmitButtonPr
     </Button>
   );
 }
-
-
