@@ -9,7 +9,7 @@ type SubmitButtonProps = {
   text?: string;
 };
 
-function SubmitButtons({ className = "", text = "submit" }: SubmitButtonProps) {
+export function SubmitButton({ className = "", text = "submit" }: SubmitButtonProps) {
   const { pending } = useFormStatus();
 
   return (
@@ -31,4 +31,4 @@ function SubmitButtons({ className = "", text = "submit" }: SubmitButtonProps) {
   );
 }
 
-export default SubmitButtons;
+
