@@ -3,7 +3,7 @@
 import db from "./db";
 import { auth, currentUser } from "@clerk/nextjs/server"; // Import only what's necessary
 import { redirect } from "next/navigation";
-import { imageSchema, profileSchema, validateWithZodSchema } from "./schemas";
+import { imageSchema, profileSchema, propertySchema, validateWithZodSchema } from "./schemas";
 import { createClerkClient } from "@clerk/nextjs/server"; // Import the create function
 import { revalidatePath } from "next/cache";
 import { uploadImage } from "./supabase";
@@ -128,3 +128,16 @@ export const updateProfileImageAction = async (
     return renderError(error);
   }
 };
+
+
+export const createPropertyAction= async ( prevState: any, formData:FormData):Promise<{message:string}>=>{
+  const user=getAuthUser();
+  try {
+    const rawData= Object.fromEntries(formData);
+    const validateFields= validateWithZodSchema(propertySchema, rawData);
+    return { message:'property created'}
+  } catch (error) {
+     return renderError(error)
+  }
+  //redirect('/')
+}
