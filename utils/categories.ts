@@ -10,7 +10,7 @@ import { GoContainer } from "react-icons/go";
 
 type Category = {
   label: CategoryLabel;
-  icon: IconType;
+  icon: IconType; //with this type we can customize it more later if we want 
 };
 
 export type CategoryLabel =
