@@ -13,6 +13,7 @@ import { fetchPropetyDetails } from "@/utils/actions";
 import { Separator } from "@radix-ui/react-dropdown-menu";
 import { redirect } from "next/navigation";
 import SubmitReview from "@/components/reviews/SubmitReview";
+import PropertyReviews from "@/components/reviews/PropertyReviews";
 
 async function PropertDetailsPage(props: { params: Promise<{ id: string }> }) {
   const params = await props.params;
@@ -57,6 +58,7 @@ async function PropertDetailsPage(props: { params: Promise<{ id: string }> }) {
       </section>
       {/* after two column section */}
       <SubmitReview propertyId={property.id} />
+      <PropertyReviews propertyId={property.id} />
     </section>
   );
 }
