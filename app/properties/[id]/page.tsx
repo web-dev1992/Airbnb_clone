@@ -9,23 +9,32 @@ import PropertyDetails from "@/components/properties/PropertyDetails";
 import ShareButton from "@/components/properties/ShareButton";
 import UserInfo from "@/components/properties/UserInfo";
 import DynamicMap from "@/components/properties/DynamicMap";
-import { fetchPropetyDetails } from "@/utils/actions";
+import { fetchPropetyDetails, findExistingReview } from "@/utils/actions";
 import { Separator } from "@radix-ui/react-dropdown-menu";
 import { redirect } from "next/navigation";
 import SubmitReview from "@/components/reviews/SubmitReview";
 import PropertyReviews from "@/components/reviews/PropertyReviews";
-
+import { auth } from "@clerk/nextjs/server";
 async function PropertDetailsPage(props: { params: Promise<{ id: string }> }) {
   const params = await props.params;
+
   const property = await fetchPropetyDetails(params.id);
 
   if (!property) redirect("/");
+
   const { baths, bedrooms, beds, guests } = property;
   const details = { baths, bedrooms, beds, guests };
+  const profileImage = property.profile.profileImage;
   const firstName = property.profile.firstName;
   const lastName = property.profile.lastName;
 
-  const profileImage = property.profile.profileImage;
+  
+  const { userId } = await auth();
+  const isNotOwner = property.profile.clerkId !== userId;
+  const reviewDoesNotExist =
+    userId && isNotOwner && !(await findExistingReview(userId, property.id));
+
+
 
   return (
     <section>
@@ -42,7 +51,7 @@ async function PropertDetailsPage(props: { params: Promise<{ id: string }> }) {
         <div className="lg:col-span-8">
           <div className="flex gap-x-4 items-center">
             <h1 className="text-xl font-bold">{property.name}</h1>
-            <PropertyRating inPage />
+            <PropertyRating inPage propertyId={property.id} />
           </div>
           <PropertyDetails details={details} />
           <UserInfo profile={{ firstName, profileImage, lastName }} />
@@ -57,7 +66,7 @@ async function PropertDetailsPage(props: { params: Promise<{ id: string }> }) {
         </div>
       </section>
       {/* after two column section */}
-      <SubmitReview propertyId={property.id} />
+      {reviewDoesNotExist && <SubmitReview propertyId={property.id} />}
       <PropertyReviews propertyId={property.id} />
     </section>
   );
