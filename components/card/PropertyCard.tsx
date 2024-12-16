@@ -27,7 +27,7 @@ function PropertyCard({ property }: { property: PropertyCardProps }) {
             {name.substring(0, 30)}
           </h3>
           {/* property rating */}
-          <PropertyRating propertyId={propertyId} inPage={false} />
+          <PropertyRating  inPage={false} />
         </div>
         <p className="text-sm mt-1 text-muted-foreground ">
           {tagline.substring(0, 40)}

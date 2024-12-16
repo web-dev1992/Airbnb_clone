@@ -1,4 +1,3 @@
-import PropertyCard from "@/components/card/PropertyCard";
 import EmptyList from "@/components/home/EmptyList";
 import PropertiesList from "@/components/home/PropertiesList";
 import { fetchFavorites } from "@/utils/actions";

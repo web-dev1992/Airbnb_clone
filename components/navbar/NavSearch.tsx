@@ -1,7 +1,7 @@
 "use client";
 import { Input } from "../ui/input";
 import { useSearchParams, usePathname, useRouter } from "next/navigation";
-import { useDebounce, useDebouncedCallback } from "use-debounce";
+import {  useDebouncedCallback } from "use-debounce";
 import { useState, useEffect } from "react";
 
 function NavSearch() {
@@ -24,7 +24,7 @@ function NavSearch() {
 
   useEffect(() => {
     if (!searchParams.get("search")) setSearch("");
-  }, [searchParams.get("search")]);
+  }, [searchParams]);
   return (
     <Input
       type="search"

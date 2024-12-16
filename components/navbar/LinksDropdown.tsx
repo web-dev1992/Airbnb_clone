@@ -15,7 +15,6 @@ import {
   SignedIn,
   SignedOut,
   SignInButton,
-  SignOutButton,
   SignUpButton,
 } from "@clerk/nextjs";
 function LinksDropdown() {
