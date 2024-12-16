@@ -12,6 +12,7 @@ import DynamicMap from "@/components/properties/DynamicMap";
 import { fetchPropetyDetails } from "@/utils/actions";
 import { Separator } from "@radix-ui/react-dropdown-menu";
 import { redirect } from "next/navigation";
+import SubmitReview from "@/components/reviews/SubmitReview";
 
 async function PropertDetailsPage(props: { params: Promise<{ id: string }> }) {
   const params = await props.params;
@@ -40,7 +41,7 @@ async function PropertDetailsPage(props: { params: Promise<{ id: string }> }) {
         <div className="lg:col-span-8">
           <div className="flex gap-x-4 items-center">
             <h1 className="text-xl font-bold">{property.name}</h1>
-            <PropertyRating inPage  />
+            <PropertyRating inPage />
           </div>
           <PropertyDetails details={details} />
           <UserInfo profile={{ firstName, profileImage, lastName }} />
@@ -54,6 +55,8 @@ async function PropertDetailsPage(props: { params: Promise<{ id: string }> }) {
           <BookingCalendar />
         </div>
       </section>
+      {/* after two column section */}
+      <SubmitReview propertyId={property.id} />
     </section>
   );
 }
