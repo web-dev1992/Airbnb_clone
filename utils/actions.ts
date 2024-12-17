@@ -1,7 +1,7 @@
 "use server";
 
 import db from "./db";
-import { auth, currentUser } from "@clerk/nextjs/server"; // Import only what's necessary
+import { auth, currentUser, getAuth } from "@clerk/nextjs/server"; // Import only what's necessary
 import { redirect } from "next/navigation";
 import {
   createReviewSchema,
@@ -425,9 +425,47 @@ export const createBookingAction = async (prevState: {
         propertyId,
       },
     });
-
   } catch (error) {
     return renderError(error);
   }
-  redirect('/bookings')
+  redirect("/bookings");
+};
+
+export const fetchBookings = async () => {
+  const user = await getAuthUser();
+  const bookings = await db.booking.findMany({
+    where: {
+      profileId: user.id,
+    },
+    include: {
+      property: {
+        select: {
+          id: true,
+          name: true,
+          country: true,
+        },
+      },
+    },
+    orderBy: {
+      createdAt: "desc",
+    },
+  });
+  return bookings;
+};
+
+export const deleteBookingAction = async (prevState: { bookingId: string }) => {
+  const { bookingId } = prevState;
+  const user = await getAuthUser();
+  try {
+    const result = await db.booking.delete({
+      where: {
+        id: bookingId,
+        profileId: user.id,
+      },
+    });
+    revalidatePath("/bookings");
+    return { message: "booking deleted successfuly!!" };
+  } catch (error) {
+    return renderError(error);
+  }
 };
