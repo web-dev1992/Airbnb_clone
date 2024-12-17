@@ -1,7 +1,6 @@
 import FavoriteToggleButton from "@/components/card/FavoriteToggleButton";
 import PropertyRating from "@/components/card/PropertyRating";
 import Amenities from "@/components/properties/Amenities";
-import BookingCalendar from "@/components/properties/BookingCalendar";
 import BreadCrumbs from "@/components/properties/BreadCrumbs";
 import Description from "@/components/properties/Description";
 import ImageContainer from "@/components/properties/ImageContainer";
@@ -9,6 +8,7 @@ import PropertyDetails from "@/components/properties/PropertyDetails";
 import ShareButton from "@/components/properties/ShareButton";
 import UserInfo from "@/components/properties/UserInfo";
 import DynamicMap from "@/components/properties/DynamicMap";
+import DynamicBookingWrapper from "@/components/booking/DynamicBookingWrapper";
 import { fetchPropetyDetails, findExistingReview } from "@/utils/actions";
 import { Separator } from "@radix-ui/react-dropdown-menu";
 import { redirect } from "next/navigation";
@@ -28,13 +28,10 @@ async function PropertDetailsPage(props: { params: Promise<{ id: string }> }) {
   const firstName = property.profile.firstName;
   const lastName = property.profile.lastName;
 
-  
   const { userId } = await auth();
   const isNotOwner = property.profile.clerkId !== userId;
   const reviewDoesNotExist =
     userId && isNotOwner && !(await findExistingReview(userId, property.id));
-
-
 
   return (
     <section>
@@ -62,7 +59,11 @@ async function PropertDetailsPage(props: { params: Promise<{ id: string }> }) {
         </div>
         <div className="lg:col-span-4 flex flex-col items-center">
           {/* calendar */}
-          <BookingCalendar />
+          <DynamicBookingWrapper
+            propertyId={property.id}
+            price={property.price}
+            bookings={property.bookings}
+          />
         </div>
       </section>
       {/* after two column section */}
