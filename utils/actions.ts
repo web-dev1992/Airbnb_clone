@@ -265,11 +265,17 @@ export const fetchPropetyDetails = async (id: string) => {
     where: {
       id,
     },
-    include: { profile: true },
+    include: {
+      profile: true,
+      bookings: {
+        select: {
+          checkIn: true,
+          checkOut: true,
+        },
+      },
+    },
   });
 };
-
-
 
 export async function createReviewAction(prevState: any, formData: FormData) {
   const user = await getAuthUser();
@@ -290,26 +296,27 @@ export async function createReviewAction(prevState: any, formData: FormData) {
   }
 }
 
-export const fetchPropertyReviews = async (propertyId:string) => {
-  const reviews= await db.review.findMany({
-    where:{
-      propertyId:propertyId
+export const fetchPropertyReviews = async (propertyId: string) => {
+  const reviews = await db.review.findMany({
+    where: {
+      propertyId: propertyId,
     },
-    select:{
-      id:true,
-      rating:true,
-      comment:true,
-      profile:{
-        select:{
-         firstName:true,
-         profileImage:true 
-        }
-      }
-    },orderBy:{
-      createdAt:'desc'
-    }
-  })
-  return reviews ;
+    select: {
+      id: true,
+      rating: true,
+      comment: true,
+      profile: {
+        select: {
+          firstName: true,
+          profileImage: true,
+        },
+      },
+    },
+    orderBy: {
+      createdAt: "desc",
+    },
+  });
+  return reviews;
 };
 
 export const fetchPropertyReviewsByUser = async () => {
@@ -372,7 +379,6 @@ export async function fetchPropertyRating(propertyId: string) {
     count: result[0]?._count.rating ?? 0,
   };
 }
-
 
 export const findExistingReview = async (
   userId: string,
